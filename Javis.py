@@ -7,10 +7,16 @@ from time import ctime
 import time
 from gtts import gTTS
 
+import RPi.GPIO as GPIO
+
+def Khoitao():
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setup(25, GPIO.OUT, initial=GPIO.LOW)
+
 # enter the name of usb microphone that you found
 # using lsusb
 # the following name is only used as an example
-mic_name = "USB Audio Device: - (hw:1,0)"
+mic_name = "HDA Intel PCH: ALC269VC Analog (hw:0,0)"
 # Sample rate is how often values are recorded
 sample_rate = 48000
 # Chunk is like a buffer. It stores 2048 samples (bytes of data)
@@ -37,6 +43,43 @@ def speak(audioString):
     tts.save("audio.mp3")
     playsound('audio.mp3')
 
+def Gioithieu_Text():
+    print('Xin chào bạn, mình là robot kể chuyện. Mình có một vài câu chuyện để kể cho bạn như sau:'
+          '\n1.Cuộc thi trong rừng'
+          '\n2.Chú thỏ thông minh'
+          '\n3.Chó sói và đàn dê'
+          '\nBạn muốn nghe chuyện nào nè !!'
+          '  ')
+
+def Gioithieu():
+    Gioithieu_Text()
+    playsound('xinchao.mp3')
+    playsound('Truyen1_gioithieu.mp3')
+    playsound('Truyen2_gioithieu.mp3')
+    playsound('Truyen3_gioithieu.mp3')
+    playsound('luachon_gioithieu.mp3')
+
+def Chuyen1():
+    print('Sau đây mình sẽ kể câu chuyện Cuộc thi trong rừng ')
+    playsound('Truyen1.mp3')
+    print('')
+
+def Chuyen2():
+    print('Sau đây mình sẽ kể câu chuyện Chú thỏ thông minh ')
+    playsound('Truyen2.mp3')
+    print('')
+def Chuyen3():
+    print('Sau đây mình sẽ kể câu Chó sói và đàn dê')
+    playsound('Truyen3.mp3')
+    print('')
+
+def Moden():
+    print("Mở đèn...")
+    GPIO.output(25,1)
+
+def Tatden():
+    print("Tắt đèn ...")
+    GPIO.output(25,0)
 
 def recordAudio():
     # Record Audio
@@ -46,7 +89,7 @@ def recordAudio():
         # wait for a second to let the recognizer adjust the
         # energy threshold based on the surrounding noise level
         r.adjust_for_ambient_noise(source)
-        print("Say Something")
+        print("Mời bạn lựa chọn ")
         # listens for the user's input
         audio = r.listen(source)
 
@@ -55,10 +98,11 @@ def recordAudio():
     try:
         # Uses the default API key
         # To use another API key: `r.recognize_google(audio, key="GOOGLE_SPEECH_RECOGNITION_API_KEY")`
-        data = r.recognize_google(audio)
-        print("You said: " + data)
+        data = r.recognize_google(audio,language="vi-VN")
+        print("Bạn đã chọn : " + data)
     except sr.UnknownValueError:
-        print("Google Speech Recognition could not understand audio")
+        print("Xin lỗi mình nghe không rõ bạn có thể nói lại được không nè ")
+        playsound('xinloi.mp3')
     except sr.RequestError as e:
         print("Could not request results from Google Speech Recognition service; {0}".format(e))
 
@@ -66,20 +110,29 @@ def recordAudio():
 
 
 def jarvis(data):
-    if "how are you" in data:
-        speak("I'm feel good today")
-    elif "really" in data:
-        speak("Sure, My Boss")
-    elif "what is my name" in data:
-        speak("You are Vinh")
-
+    if "cuộc thi trong rừng" in data:
+        Chuyen1()
+    elif "Chú Thỏ Thông Minh" in data:
+        Chuyen2()
+    elif "chó sói và đàn dê" in data:
+        Chuyen3()
+    elif "Mở đèn" in data:
+        Moden()
+        playsound('moden.mp3')
+    elif "Tắt Đèn" in data:
+        Tatden()
+        playsound('tatden.mp3')
     elif "what time is it" in data:
         speak(ctime())
-
+def Tieptuc():
+    print('Ban có muốn nghe tiếp truyện nào nữa không hay bạn muốn mình tắt đèn để chúng ta cùng đi ngủ ??')
+    playsound('tieptuc.mp3')
 
 # initialization
 time.sleep(2)
-playsound("audio.mp3")
+Gioithieu()
+
 while 1:
     data = recordAudio()
     jarvis(data)
+    Tieptuc()
