@@ -5,6 +5,7 @@ import speech_recognition as sr
 from playsound import playsound
 from time import ctime
 import time
+import os, sys
 from gtts import gTTS
 
 import RPi.GPIO as GPIO
@@ -16,7 +17,7 @@ def Khoitao():
 # enter the name of usb microphone that you found
 # using lsusb
 # the following name is only used as an example
-mic_name = "HDA Intel PCH: ALC269VC Analog (hw:0,0)"
+mic_name = "USB Audio Device: - (hw:1,0)"
 # Sample rate is how often values are recorded
 sample_rate = 48000
 # Chunk is like a buffer. It stores 2048 samples (bytes of data)
@@ -53,24 +54,24 @@ def Gioithieu_Text():
 
 def Gioithieu():
     Gioithieu_Text()
-    playsound('xinchao.mp3')
-    playsound('Truyen1_gioithieu.mp3')
-    playsound('Truyen2_gioithieu.mp3')
-    playsound('Truyen3_gioithieu.mp3')
-    playsound('luachon_gioithieu.mp3')
+    os.system('mpg321 xinchao.mp3 ')
+    os.system('mpg321 Truyen1_gioithieu.mp3 ')
+    os.system('mpg321 Truyen2_gioithieu.mp3 ')
+    os.system('mpg321 Truyen3_gioithieu.mp3 ')
+    os.system('mpg321 luachon_gioithieu.mp3 ')
 
-def Chuyen1():
+def Truyen1():
     print('Sau đây mình sẽ kể câu chuyện Cuộc thi trong rừng ')
-    playsound('Truyen1.mp3')
+    os.system('mpg321 Truyen1.mp3 ')
     print('')
 
-def Chuyen2():
+def Truyen2():
     print('Sau đây mình sẽ kể câu chuyện Chú thỏ thông minh ')
-    playsound('Truyen2.mp3')
+    os.system('mpg321 Truyen2.mp3 ')
     print('')
-def Chuyen3():
+def Truyen3():
     print('Sau đây mình sẽ kể câu Chó sói và đàn dê')
-    playsound('Truyen3.mp3')
+    os.system('mpg321 Truyen3.mp3 ')
     print('')
 
 def Moden():
@@ -102,37 +103,50 @@ def recordAudio():
         print("Bạn đã chọn : " + data)
     except sr.UnknownValueError:
         print("Xin lỗi mình nghe không rõ bạn có thể nói lại được không nè ")
-        playsound('xinloi.mp3')
+        os.system('mpg321 xinloi_gioithieu.mp3 ')
     except sr.RequestError as e:
         print("Could not request results from Google Speech Recognition service; {0}".format(e))
 
     return data
 
+def Tieptuc():
+    print('Ban có muốn nghe tiếp truyện nào nữa không hay bạn muốn mình tắt đèn để chúng ta cùng đi ngủ ??')
+    os.system('mpg321 tieptuc.mp3 ')
 
 def jarvis(data):
     if "cuộc thi trong rừng" in data:
-        Chuyen1()
+        Truyen1()
+        Tieptuc()
     elif "Chú Thỏ Thông Minh" in data:
-        Chuyen2()
+        Truyen2()
+        Tieptuc()
     elif "chó sói và đàn dê" in data:
-        Chuyen3()
+        Truyen3()
+        Tieptuc()
     elif "Mở đèn" in data:
         Moden()
-        playsound('moden.mp3')
+        os.system('mpg321 moden.mp3 ')
+        ON_OFF=0
     elif "Tắt Đèn" in data:
         Tatden()
-        playsound('tatden.mp3')
+        os.system('mpg321 tatden.mp3 ')
+        ON_OFF=1
     elif "what time is it" in data:
         speak(ctime())
-def Tieptuc():
-    print('Ban có muốn nghe tiếp truyện nào nữa không hay bạn muốn mình tắt đèn để chúng ta cùng đi ngủ ??')
-    playsound('tieptuc.mp3')
 
 # initialization
-time.sleep(2)
 Gioithieu()
+ON_OFF=0
 
 while 1:
-    data = recordAudio()
-    jarvis(data)
-    Tieptuc()
+    if ON_OFF == 0:
+        data = recordAudio()
+        jarvis(data)
+    
+    elif ON_OFF == 1:
+        data = r.recognize_google(audio,language="vi-VN")
+        if data == "Mở đèn":
+            Moden()
+            os.system('mpg321 moden.mp3')
+            ON_OFF=0
+
