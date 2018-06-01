@@ -12,12 +12,12 @@ import RPi.GPIO as GPIO
 
 def Khoitao():
     GPIO.setmode(GPIO.BCM)
-    GPIO.setup(25, GPIO.OUT, initial=GPIO.LOW)
+    GPIO.setup(24, GPIO.OUT, initial=GPIO.HIGH)
 
 # enter the name of usb microphone that you found
 # using lsusb
 # the following name is only used as an example
-mic_name = "USB Audio Device: - (hw:1,0)"
+mic_name = "USB PnP Sound Device: Audio (hw:1,0)"
 # Sample rate is how often values are recorded
 sample_rate = 48000
 # Chunk is like a buffer. It stores 2048 samples (bytes of data)
@@ -76,11 +76,11 @@ def Truyen3():
 
 def Moden():
     print("Mở đèn...")
-    GPIO.output(25,1)
+    GPIO.output(24,1)
 
 def Tatden():
     print("Tắt đèn ...")
-    GPIO.output(25,0)
+    GPIO.output(24,0)
 
 def recordAudio():
     # Record Audio
@@ -135,6 +135,7 @@ def jarvis(data):
         speak(ctime())
 
 # initialization
+Khoitao()
 Gioithieu()
 ON_OFF=0
 
