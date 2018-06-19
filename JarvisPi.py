@@ -178,7 +178,7 @@ while 1:
     if ON_OFF == 0:
         data = recordAudio()
         jarvis(data)
-		if "Tắt Đèn" in data:
+        if "Tắt Đèn" in data:
             Tatden()
             ON_OFF = 1
 
