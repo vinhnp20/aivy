@@ -1,0 +1,45 @@
+.container{
+    margin-left: 200px;
+    margin-right: 200px;
+    
+}
+.nav1 ul{
+    list-style-type: none;
+
+}
+.nav1 #ob1{
+    display: inline;
+    float: left;
+}
+.nav1 #ob2{
+    display: inline-block;
+    float: left;
+}
+ #ob2 #p1{
+
+}
+ #ob2 #p2{
+
+}
+ #ob3{
+    display: inline;
+    float: right;
+    margin-top: 37px;
+}
+#ob4{
+    display: inline;
+    float: right;
+    margin-top: 24px;
+    margin-right: 22px;
+}
+#p3 {
+    display: inline;
+    font-family: "Myriad Pro";
+    font-size: 32px;
+    margin-left: 15px;
+  }
+  #p4 {
+    margin-top: 0px;
+    font-family: Meiryo;
+    font-size: 10px;
+  }
